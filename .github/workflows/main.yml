@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "test" ]
+  pull_request:
+    branches: [ "main", "test" ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    
+    if: github.ref == 'refs/heads/test'      
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: taiki-e/install-action@v2
+      with:
+        tool: cargo-binstall
+    - name: Install Shuttle
+      run:  cargo install cargo-shuttle
+    - name: Deploy Shuttle
+      run: cargo shuttle --template rocket
+
+
