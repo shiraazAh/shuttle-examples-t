@@ -18,13 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: taiki-e/install-action@v2
+    - uses: shuttle-hq/deploy-action@main
       with:
-        tool: cargo-binstall
-    - name: Install Shuttle
-      run:  cargo install cargo-shuttle
-    - name: Deploy Shuttle
-      run: cargo shuttle init
-
+        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
 
 
