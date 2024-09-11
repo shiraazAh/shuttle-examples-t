@@ -12,15 +12,65 @@ env:
 
 jobs:
   install:
-    runs-on: ubuntu-latest
-        
+    runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v4
 
-    - uses: taiki-e/install-action@v2
+    - name: Deploy Actix Web
+      uses: shuttle-hq/deploy-action@main
       with:
-        tool: cargo-binstall
-    - name: Install Shuttle
-      run:  cargo install cargo-shuttle
-    - name: Deploy Shuttle
-      run: cargo shuttle --template rocket
+
+        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        working-directory: "actix-web-test"
+
+    - name: Call Actix Api
+      id: actix-api-result
+      run: |
+        echo "Calling Api"
+
+        RESULT=$(curl https://actix-web-test.shuttleapp.rs)
+
+        echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+
+    - name: Check if Actix API returned "Hello world!"
+      if: steps.actix-api-result.outputs.result != 'Hello World!'
+      run: |
+        echo "The API returned: '${{ steps.actix-api-result.outputs.result }}' '${{ 'Hello World' }}'"
+        exit 1
+    
+    # Stopping immedietly is not working
+    # - name: Stop Actix Web Deployment
+    #   run: cargo shuttle stop --name actix-web-test
+
+    - name: Deploy Bevy
+      uses: shuttle-hq/deploy-action@main
+      with:
+        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        working-directory: "bevy-test"
+
+    - name: Call Bevy Api
+      id: bevy-api-result
+      run: |
+        echo "Calling Api"
+
+        RESULT=$(curl https://bevy-test.shuttleapp.rs)
+
+        echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+
+    - name: Check if Bevy API returned "Hello world!"
+      if: steps.bevy-api-result.outputs.result  != 'Hello World!'
+      run: |
+        echo "The API returned: '${{ steps.bevy-api-result.outputs.result }}'"
+        exit 1
+
+    # - name: Stop Bevy Deployment
+    #   run: cargo shuttle stop --name bevy-test
+    
+    # - name: Call Api
+    #   run: curl https://try-test.shuttleapp.rs
+    
+    # - name: Set output
+    #   id: setter
+    #   run: |
+    #     echo "foo=bar" >> "$GITHUB_OUTPUT"
+      
