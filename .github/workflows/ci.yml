@@ -24,8 +24,7 @@ jobs:
     #     working-directory: "try-test"
     #     name: "try-test"
 
-    - 
-      name: Call Api
+    - name: Call Api
       id: api-result
       run: |
         echo "Calling Api"
@@ -36,6 +35,12 @@ jobs:
 
     - run: | 
         echo Result from the prev step: "${{ steps.api-result.outputs.result }}"
+
+    - name: A/B Check
+      if: ${{ steps.api-result.outputs.result }} != 'Hello world!'
+      run: |
+        echo "The API returned: '${{ steps.api-result.outputs.result }}'"
+        exit 1
     
     # - name: Call Api
     #   run: curl https://try-test.shuttleapp.rs
