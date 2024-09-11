@@ -22,5 +22,8 @@ jobs:
       with:
         deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
         working-directory: "try-test"
+    
+    - name: Call Api
+      run: curl https://try-test.shuttleapp.rs
 
 
