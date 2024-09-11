@@ -18,28 +18,46 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - uses: shuttle-hq/deploy-action@main
-    #   with:
-    #     deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
-    #     working-directory: "try-test"
-    #     name: "try-test"
+    - name: Deploy Actix Web
+      uses: shuttle-hq/deploy-action@main
+      with:
+        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        working-directory: "actix-web-test"
 
-    - name: Call Api
-      id: api-result
+    - name: Call Actix Api
+      id: actix-api-result
       run: |
         echo "Calling Api"
 
-        RESULT=$(curl https://try-test.shuttleapp.rs)
+        RESULT=$(curl https://axis-test.shuttleapp.rs)
 
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
-    - run: | 
-        echo Result from the prev step: "${{ steps.api-result.outputs.result }}"
-
-    - name: A/B Check
-      if: ${{ steps.api-result.outputs.result }} != 'Hello world!'
+    - name: Check if the API returned "Hello world!"
+      if: ${{ steps.actix-api-result.outputs.result }} != 'Hello world!'
       run: |
-        echo "The API returned: '${{ steps.api-result.outputs.result }}'"
+        echo "The API returned: '${{ steps.actix-api-result.outputs.result }}'"
+        exit 1
+
+    - name: Deploy Bevy
+      uses: shuttle-hq/deploy-action@main
+      with:
+        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        working-directory: "bevy-test"
+
+    - name: Call Actix Api
+      id: bevy-api-result
+      run: |
+        echo "Calling Api"
+
+        RESULT=$(curl https://bevy-test.shuttleapp.rs)
+
+        echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+
+    - name: Check if the API returned "Hello world!"
+      if: ${{ steps.bevy-api-result.outputs.result }} != 'Hello world!'
+      run: |
+        echo "The API returned: '${{ steps.bevy-api-result.outputs.result }}'"
         exit 1
     
     # - name: Call Api
