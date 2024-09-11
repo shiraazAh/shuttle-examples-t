@@ -34,7 +34,7 @@ jobs:
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
     - name: Check if Actix API returned "Hello world!"
-      if: ${{ steps.actix-api-result.outputs.result }} != 'Hello World!'
+      if: steps.actix-api-result.outputs.result != 'Hello World!'
       run: |
         echo "The API returned: '${{ steps.actix-api-result.outputs.result }}' '${{ 'Hello World' }}'"
         exit 1
