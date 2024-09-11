@@ -39,6 +39,7 @@ jobs:
         echo "The API returned: '${{ steps.actix-api-result.outputs.result }}' '${{ 'Hello World' }}'"
         exit 1
     
+    # Stopping immedietly is not working
     # - name: Stop Actix Web Deployment
     #   run: cargo shuttle stop --name actix-web-test
 
