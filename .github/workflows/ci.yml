@@ -18,14 +18,32 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: shuttle-hq/deploy-action@main
-      with:
-        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
-        working-directory: "try-test"
-        name: "try-test"
+    # - uses: shuttle-hq/deploy-action@main
+    #   with:
+    #     deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+    #     working-directory: "try-test"
+    #     name: "try-test"
+
+    - 
+      name: Call Api
+      id: api-result
+      run: |
+        echo "Calling Api"
+
+        RESULT=$(curl https://try-test.shuttleapp.rs)
+
+        echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+
+    - run: | 
+        echo Result from the prev step: "${{ steps.api-result.outputs.result }}"
     
-    - name: Call Api
-      run: curl https://try-test.shuttleapp.rs
+    # - name: Call Api
+    #   run: curl https://try-test.shuttleapp.rs
+    
+    # - name: Set output
+    #   id: setter
+    #   run: |
+    #     echo "foo=bar" >> "$GITHUB_OUTPUT"
       
 
 
