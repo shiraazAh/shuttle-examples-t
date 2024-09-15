@@ -21,7 +21,7 @@ jobs:
           echo "value=[\"actix-web-test\", \"tide-test\", \"thruster-test\"]" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.matrix.outputs.value }}"
-  install:
+  deploy:
     needs: [ setup ]
     runs-on: ubuntu-latest    
     strategy:
@@ -47,7 +47,7 @@ jobs:
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
     - name: If Api isn't returning "Hello world!"
-      if: ${{(steps.call-api.outputs.result != 'Hello World!') || (steps.call-api.outputs.result != 'Hello, World!') || (steps.call-api.outputs.result != 'Hello, world!')}}
+      if: ${{steps.call-api.outputs.result != 'Hello World!' || steps.call-api.outputs.result != 'Hello, World!' || steps.call-api.outputs.result != 'Hello, world!'}}
       run: |
         echo "The API returned: '${{ steps.call-api.outputs.result }}'"
         exit 1
