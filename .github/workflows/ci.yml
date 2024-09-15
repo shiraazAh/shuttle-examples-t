@@ -46,7 +46,7 @@ jobs:
 
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
-    - name: If Api isn't returning "Hello world!"
+    - name: If Api isn't returning "Hello World!"
       if: steps.call-api.outputs.result != 'Hello World!'
       run: |
         echo "The API returned: '${{ steps.call-api.outputs.result }}'"
