@@ -47,55 +47,9 @@ jobs:
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
     - name: If Api isn't returning "Hello world!"
-      if: ${{steps.call-api.outputs.result != 'Hello World!' || steps.call-api.outputs.result != 'Hello, World!' || steps.call-api.outputs.result != 'Hello, world!'}}
+      if: steps.call-api.outputs.result != 'Hello World!'
       run: |
         echo "The API returned: '${{ steps.call-api.outputs.result }}'"
         exit 1
-    
-    # Stopping immedietly is not working
-    # - name: Stop Actix Web Deployment
-    #   run: cargo shuttle stop --name actix-web-test
-
-    # - name: Deploy Bevy
-    #   uses: shuttle-hq/deploy-action@main
-    #   with:
-    #     deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
-    #     working-directory: "deployment-tests/bevy-test"
-
-    # - name: Call Bevy Api
-    #   id: bevy-api-result
-    #   run: |
-    #     echo "Calling Api"
-
-    #     RESULT=$(curl https://bevy-test.shuttleapp.rs)
-
-    #     echo "result=$RESULT" >> "$GITHUB_OUTPUT"
-
-    # - name: Check if Bevy API returned "Hello world!"
-    #   if: steps.bevy-api-result.outputs.result  != 'Hello World!'
-    #   run: |
-    #     echo "The API returned: '${{ steps.bevy-api-result.outputs.result }}'"
-    #     exit 1
-
-    # - name: Deploy Bevy
-    #   uses: shuttle-hq/deploy-action@main
-    #   with:
-    #     deploy-key: 
-    #     working-directory: "deployment-tests/bevy-test"
-
-    # - name: Call Bevy Api
-    #   id: bevy-api-result
-    #   run: |
-    #     echo "Calling Api"
-
-    #     RESULT=$(curl https://bevy-test.shuttleapp.rs)
-
-    #     echo "result=$RESULT" >> "$GITHUB_OUTPUT"
-
-    # - name: Check if Bevy API returned "Hello world!"
-    #   
-    #   run: |
-    #     echo "The API returned: ''"
-    #     exit 1
 
       
