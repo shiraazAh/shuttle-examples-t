@@ -18,7 +18,7 @@ jobs:
     steps:
       - id: matrix
         run: |
-          echo "value=[\"actix-web-test\", \"loco-test\", \"bevy-test\"]" >> $GITHUB_OUTPUT
+          echo "value=[\"actix-web-test\", \"loco-test\", \"thruster-test\"]" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.matrix.outputs.value }}"
   install:
